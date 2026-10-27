@@ -1,5 +1,7 @@
-const BASE_URL = "https://school-management-system-alpha.vercel.app";
-// const BASE_URL = "http://127.0.0.1:8000";
+// Set REACT_APP_API_URL to use another backend (.env.development points it at the local server)
+const BASE_URL =
+  process.env.REACT_APP_API_URL ||
+  "https://school-management-system-alpha.vercel.app";
 
 export const AUTH_ENDPOINTS = {
   LOGIN: `${BASE_URL}/users/login/`,

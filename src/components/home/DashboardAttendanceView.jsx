@@ -4,11 +4,8 @@ import { FaEllipsisH } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { subjects } from "../../data/subjects";
 import { useUser } from "../utils/userContext";
-import AttendanceOverview from "../AttendanceOverview";
-import { dashboardAttendanceData } from "../../data/attendanceData";
 const DashboardAttendanceView = () => {
   const { role } = useUser();
-  const attendance = dashboardAttendanceData();
 
   return (
     <Grid container spacing={3}>
@@ -93,71 +90,21 @@ const DashboardAttendanceView = () => {
             borderStyle: "solid",
             borderWidth: "1px",
             borderColor: "divider",
-
             padding: "16px",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Typography variant="h5">Student Today's Attendance</Typography>
-            <Divider />
-            <Typography
-              variant="subtitle1"
-              sx={{ textAlign: "right", mt: 0.3 }}
-            >
-              <Link to="/take_attendance" className="link">
-                Take Attendance
-              </Link>
-            </Typography>
-          </Box>
-          <Box sx={{ mt: 1 }}>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <AttendanceOverview
-                title="Students Present Today"
-                data={attendance.present_ratio}
-                progress={attendance.percentage_total_present}
-              />
-            </div>
-          </Box>
-        </Paper>
-        <Paper
-          sx={{
-            boxShadow: "none !important",
-            borderRadius: "12px",
-            borderStyle: "solid",
-            borderWidth: "1px",
-            borderColor: "divider",
-            paddingX: "16px",
-            marginTop: "10px",
-          }}
-        >
-          <Box>
-            <AttendanceOverview
-              title={`${attendance.present} PRESENT`}
-              data={`${attendance.percentage_present}%`}
-              progress={attendance.percentage_present}
-            />
-            <AttendanceOverview
-              title={`${attendance.late} LATE`}
-              data={`${attendance.percentage_late}%`}
-              progress={attendance.percentage_late}
-            />
-            <AttendanceOverview
-              title={`${attendance.absent} ABSENT`}
-              data={`${attendance.percentage_absent}%`}
-              progress={attendance.percentage_absent}
-            />
-            <AttendanceOverview
-              title={`${attendance.half_day} HALF DAY`}
-              data={`${attendance.percentage_half_day}%`}
-              progress={attendance.percentage_half_day}
-            />
-          </Box>
+          <Typography variant="h5" gutterBottom>
+            Attendance Coming Soon!
+          </Typography>
+          <Typography variant="body1" sx={{ opacity: 0.7 }}>
+            Attendance tracking is not available yet. Stay tuned!
+          </Typography>
         </Paper>
       </Grid>
     </Grid>

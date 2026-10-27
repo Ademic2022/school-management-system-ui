@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import Sidebar from "./components/common/Sidebar";
 import Authentication from "./pages/Authentication";
 import Navbar from "./components/common/Navbar";
@@ -19,6 +19,12 @@ import Alerts from "./components/Alerts";
 import { notificationMessages } from "./components/utils/notificationMessages";
 
 const sideBarWidth = 250;
+
+const pageLoader = (
+  <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
+    <CircularProgress />
+  </Box>
+);
 
 function App() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -60,46 +66,50 @@ function App() {
               />
             )}
             {/* Routes */}
-            <Routes>
-              {userRoutes.map((route) => (
-                <Route
-                  key={route.id}
-                  path={route.path}
-                  element={route.element}
-                />
-              ))}
-            </Routes>
+            <React.Suspense fallback={pageLoader}>
+              <Routes>
+                {userRoutes.map((route) => (
+                  <Route
+                    key={route.id}
+                    path={route.path}
+                    element={route.element}
+                  />
+                ))}
+              </Routes>
+            </React.Suspense>
             <Footer />
           </Box>
         </Box>
       ) : (
         <>
-          <Routes>
-            <Route path="/login" element={<Authentication />} />
-            <Route
-              path="/success"
-              element={
-                <SuccessPage
-                  color="green"
-                  title="Registration Successful"
-                  body="We appreciate your registration."
-                  message="An email with further instructions has been sent to your email
-                  address."
-                  buttonText="Go to Login"
-                  linkTo="/login"
-                />
-              }
-            />
-            <Route path="/reset_password" element={<ResetLinkSent />} />
-            <Route
-              path="/activation/:uid/:token/"
-              element={<ActivationComponent />}
-            ></Route>
-            <Route
-              path="/reset_password/:uid/:token/"
-              element={<NewPassword />}
-            ></Route>
-          </Routes>
+          <React.Suspense fallback={pageLoader}>
+            <Routes>
+              <Route path="/login" element={<Authentication />} />
+              <Route
+                path="/success"
+                element={
+                  <SuccessPage
+                    color="green"
+                    title="Registration Successful"
+                    body="We appreciate your registration."
+                    message="An email with further instructions has been sent to your email
+                    address."
+                    buttonText="Go to Login"
+                    linkTo="/login"
+                  />
+                }
+              />
+              <Route path="/reset_password" element={<ResetLinkSent />} />
+              <Route
+                path="/activation/:uid/:token/"
+                element={<ActivationComponent />}
+              ></Route>
+              <Route
+                path="/reset_password/:uid/:token/"
+                element={<NewPassword />}
+              ></Route>
+            </Routes>
+          </React.Suspense>
           <ToastContainer />
         </>
       )}

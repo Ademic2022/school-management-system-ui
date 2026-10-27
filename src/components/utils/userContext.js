@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useEffect, useReducer } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { USER_ENDPOINTS } from "../../apiCalls/endpoints";
 import requestHandler from "../../apiCalls/requestHandler";
@@ -15,6 +22,8 @@ export const UserProvider = ({ children }) => {
   );
   const navigate = useNavigate();
   const location = useLocation();
+  // Token the user was last fetched for, so navigation doesn't refetch the same user
+  const fetchedToken = useRef(undefined);
 
   const fetchUserImages = async (userId) => {
     try {
@@ -89,8 +98,8 @@ export const UserProvider = ({ children }) => {
 
       In case of an error during the fetch, it logs an error message to the console.
 
-      The useEffect has dependencies on the navigate function and the current pathname to
-      trigger the fetch when the route changes.
+      The useEffect runs when the route changes, but skips the fetch if the user has
+      already been fetched for the current token.
     */
     const fetchAuthenticatedUser = async () => {
       try {
@@ -114,13 +123,15 @@ export const UserProvider = ({ children }) => {
 
         const isExcluded = isRouteExcluded(currentRoute);
 
-        if (!isExcluded) {
+        const token = localStorage.getItem("token");
+        if (!isExcluded && (!state.auth || token !== fetchedToken.current)) {
           const getUser = await requestHandler(
             "get",
             USER_ENDPOINTS.AUTHENTICATED_USER
           );
 
           if (getUser[0] !== null) {
+            fetchedToken.current = token;
             const storedImage = localStorage.getItem("userImage");
             const storedThumbnail = localStorage.getItem("thumbnail");
             fetchNotifications(getUser[0].id);
@@ -147,6 +158,7 @@ export const UserProvider = ({ children }) => {
               },
             });
           } else {
+            fetchedToken.current = undefined;
             setUserContext(null, false, null);
             localStorage.clear();
 
@@ -161,7 +173,7 @@ export const UserProvider = ({ children }) => {
     };
 
     fetchAuthenticatedUser();
-  }, [navigate, location.pathname, dispatch]);
+  }, [navigate, location.pathname, dispatch, state.auth]);
 
   const setUserContext = (userData, authStatus, UserRole) => {
     /*
@@ -196,24 +208,25 @@ export const UserProvider = ({ children }) => {
     });
   };
 
-  return (
-    <UserContext.Provider
-      value={{
-        ...state,
-        setUserContext,
-        setAuthStatus,
-        setRole: (role) => dispatch({ type: ACTIONS.SET_ROLE, payload: role }),
-        setProfileImage: (image) =>
-          dispatch({ type: ACTIONS.SET_PROFILE_IMAGE, payload: image }),
-        setUserStatus: (status) =>
-          dispatch({ type: ACTIONS.SET_USER_STATUS, payload: status }),
-        setNotifications: (notifications) =>
-          dispatch({ type: ACTIONS.SET_NOTIFICATIONS, payload: notifications }),
-      }}
-    >
-      {children}
-    </UserContext.Provider>
+  const value = useMemo(
+    () => ({
+      ...state,
+      setUserContext,
+      setAuthStatus,
+      setRole: (role) => dispatch({ type: ACTIONS.SET_ROLE, payload: role }),
+      setProfileImage: (image) =>
+        dispatch({ type: ACTIONS.SET_PROFILE_IMAGE, payload: image }),
+      setUserStatus: (status) =>
+        dispatch({ type: ACTIONS.SET_USER_STATUS, payload: status }),
+      setNotifications: (notifications) =>
+        dispatch({ type: ACTIONS.SET_NOTIFICATIONS, payload: notifications }),
+    }),
+    // setUserContext and setAuthStatus only use the stable dispatch
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [state]
   );
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
 export const useUser = () => {
