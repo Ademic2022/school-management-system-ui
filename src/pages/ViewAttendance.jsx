@@ -1,88 +1,104 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Chip, Grid, Stack, Typography } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import TakeAttendanceForm from "../components/forms/TakeAttandanceForm";
-import { errorToast, successToast } from "../components/utils/toastUtils";
-import { viewAttendanceData, viewAttendanceColumn } from "../data/viewAttendance";
+import { errorToast } from "../components/utils/toastUtils";
+import { apiErrorMessage } from "../components/utils/apiErrorMessage";
+import {
+  viewAttendanceColumn,
+  toViewAttendanceRow,
+} from "../data/viewAttendance";
+import { attendanceStatuses } from "../data/takeAttendance";
 import Table from "../components/Table";
+import requestHandler from "../apiCalls/requestHandler";
+import { CORE } from "../apiCalls/endpoints";
 
-const TakeAttendance = () => {
+// Defined outside the component so it isn't recreated (and its children remounted) every render
+const ComponentWrapper = styled(Box)({
+  marginTop: "10px",
+  paddingBottom: "10px",
+});
+
+const ViewAttendance = () => {
   const [data, setData] = useState(null);
+  const [searchedDate, setSearchedDate] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSearchResult = async (selectedClassroom, selectedStream) => {
+  const handleSearchResult = async (classroomId, date) => {
     setData(null);
     setLoading(true);
-    // Handle logic for checking exam results based on selectedSession and selectedClassroom
-    await new Promise((resolve) => setTimeout(resolve, 5000));
 
-    const fetchedData = viewAttendanceData;
+    const [records, error] = await requestHandler(
+      "get",
+      CORE.GET_FILTERED_ATTENDANCE(classroomId, date)
+    );
+    setLoading(false);
+    setSearchedDate(date);
 
-    if (fetchedData) {
-      setData(fetchedData);
-      console.log(
-        "Checking results for stream:",
-        selectedStream,
-        "Classroom:",
-        selectedClassroom
-      );
-      setLoading(false);
-
-      successToast("Success"); //logs 3 times
-    } else {
-      errorToast("No results found for the selected session.");
-      setLoading(false);
+    if (!records) {
+      errorToast(apiErrorMessage(error, "Could not load attendance."));
+      return;
     }
+    setData(records.map(toViewAttendanceRow));
   };
 
-  const ComponentWrapper = styled(Box)({
-    marginTop: "10px",
-    paddingBottom: "10px",
-  });
+  const countOf = (status) =>
+    data.filter((row) => row.attendance === status).length;
+
   return (
     <Box sx={{ pt: "80px", pb: "20px" }}>
       <ToastContainer />
       <Typography variant="h6" sx={{ marginBottom: "14px" }}>
-        Results
+        Attendance Record
       </Typography>
-      <ComponentWrapper>{/* <Stats /> */}</ComponentWrapper>
 
       <ComponentWrapper>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={12}>
+          <Grid item xs={12}>
             <TakeAttendanceForm
               onSubmit={handleSearchResult}
               loading={loading}
+              title="Query Attendance"
+              buttonText="Search"
             />
           </Grid>
-          <Grid item xs={12} md={6} lg={3}></Grid>
         </Grid>
       </ComponentWrapper>
 
       <ComponentWrapper>
         <Typography variant="h5" sx={{ my: 3 }}>
-          Student Attendance Record
+          Student Attendance Record{searchedDate ? ` for ${searchedDate}` : ""}
         </Typography>
-        {data ? (
-          <Table
-            data={data}
-            fields={viewAttendanceColumn}
-            numberOfRows={data.length}
-            enableTopToolBar={true}
-            enableBottomToolBar={true}
-            enablePagination={true}
-            enableRowSelection={false}
-            enableColumnFilters={true}
-            enableEditing={false}
-            enableColumnDragging={true}
-            showPreview={false}
-            routeLink="classrooms"
-        />
+        {data && data.length > 0 ? (
+          <>
+            <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: "wrap" }}>
+              {attendanceStatuses.map((status) => (
+                <Chip key={status} label={`${status}: ${countOf(status)}`} />
+              ))}
+            </Stack>
+            <Table
+              data={data}
+              fields={viewAttendanceColumn}
+              numberOfRows={data.length}
+              enableTopToolBar={true}
+              enableBottomToolBar={true}
+              enablePagination={true}
+              enableRowSelection={false}
+              enableColumnFilters={true}
+              enableEditing={false}
+              enableColumnDragging={true}
+              showPreview={false}
+            />
+          </>
         ) : (
           <Typography variant="body1">
-            {loading ? "Searching for data..." : "No Result Found!"}
+            {loading
+              ? "Searching for data..."
+              : data
+              ? "No attendance has been taken for this class on this date."
+              : "Select a classroom and date."}
           </Typography>
         )}
       </ComponentWrapper>
@@ -90,4 +106,4 @@ const TakeAttendance = () => {
   );
 };
 
-export default TakeAttendance;
+export default ViewAttendance;

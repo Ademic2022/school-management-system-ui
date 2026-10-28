@@ -42,4 +42,10 @@ export const CORE = {
     `${BASE_URL}/core/subjects/?class_room=${classroomId}`,
   GET_STUDENT: (studentId) => `${BASE_URL}/core/students/${studentId}/`,
   GET_TEACHER: (teacherId) => `${BASE_URL}/core/teachers/${teacherId}/`,
+  GET_CLASSROOM_STUDENTS: (classroomId) =>
+    `${BASE_URL}/core/students/?classroom=${classroomId}`,
+  ATTENDANCE: `${BASE_URL}/core/attendance/`,
+  BULK_MARK_ATTENDANCE: `${BASE_URL}/core/attendance/bulk_mark/`,
+  GET_FILTERED_ATTENDANCE: (classroomId, date) =>
+    `${BASE_URL}/core/attendance/?classroom=${classroomId}&date=${date}`,
 };

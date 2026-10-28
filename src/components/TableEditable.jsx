@@ -27,9 +27,12 @@ const TableEditable = ({
   defaultValues,
   onNewRowSave,
   onDeleteRow,
+  onSubmit,
 }) => {
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(true);
+  // With onSubmit the rows can be submitted as loaded (e.g. a whole class marked PRESENT);
+  // otherwise the button stays disabled until a row is edited
+  const [submitted, setSubmitted] = useState(!onSubmit);
   const [rows, setRows] = React.useState(myData);
   const [rowModesModel, setRowModesModel] = React.useState({});
   const { userStatus } = useUser();
@@ -154,6 +157,13 @@ const TableEditable = ({
 
   const handleGetAllData = async () => {
     setLoading(true);
+
+    if (onSubmit) {
+      const saved = await onSubmit(rows);
+      setLoading(false);
+      setSubmitted(saved);
+      return;
+    }
 
     await new Promise((resolve) => setTimeout(resolve, 3000));
 

@@ -27,6 +27,8 @@ export const ResetLinkSent = lazy(() => import("./ResetLinkSent"));
 export const Classrooms = lazy(() => import("./Classrooms"));
 export const CheckResult = lazy(() => import("./CheckResult"));
 export const RecordStudentResult = lazy(() => import("./RecordStudentResult"));
+export const TakeAttendance = lazy(() => import("./TakeAttendance"));
+export const ViewAttendance = lazy(() => import("./ViewAttendance"));
 export const LeaveRequests = lazy(() => import("./LeaveRequests"));
 export const GeneralSettings = lazy(() => import("./GeneralSettings"));
 export const TeachersDetails = lazy(() => import("../components/generalSettings/TeachersDetails"));

@@ -1,9 +1,11 @@
-import { randomTraderName, randomId } from "@mui/x-data-grid-generator";
+import { statusColors } from "./takeAttendance";
 
+// Table's PDF export prints Object.values(row) under these headers,
+// so toViewAttendanceRow must return keys in the same order as the columns.
 export const viewAttendanceColumn = [
   {
     accessorKey: "id",
-    header: "Id",
+    header: "#",
     size: 50,
   },
   {
@@ -17,110 +19,33 @@ export const viewAttendanceColumn = [
   {
     accessorKey: "attendance",
     header: "Status",
-    Cell: ({ cell, row }) => (
-      <div>
-        {row.original.attendance === "PRESENT" && (
-          <span
-            className="status"
-            style={{ color: "#388b84", backgroundColor: "#388b8433" }}
-          >
-            {cell.getValue()}
-          </span>
-        )}
-        {row.original.attendance === "ABSENT" && (
-          <span
-            className="status"
-            style={{ color: "#fd4332", backgroundColor: "#fd433233" }}
-          >
-            {cell.getValue()}
-          </span>
-        )}
-        {row.original.attendance === "LATE" && (
-          <span
-            className="status"
-            style={{ color: "#ff9966", backgroundColor: "#ff996633" }}
-          >
-            {cell.getValue()}
-          </span>
-        )}
-      </div>
+    Cell: ({ cell }) => (
+      <span
+        className="status"
+        style={{
+          color: statusColors[cell.getValue()],
+          backgroundColor: `${statusColors[cell.getValue()]}33`,
+        }}
+      >
+        {cell.getValue()}
+      </span>
     ),
   },
   {
+    accessorKey: "marked_by",
+    header: "Marked By",
+  },
+  {
     accessorKey: "time",
-    header: "Time",
+    header: "Last Marked",
   },
 ];
 
-export const viewAttendanceData = [
-  {
-    id: 1,
-    name: randomTraderName(),
-    registration_number: randomId().slice(0, 8),
-    attendance: "ABSENT",
-    time: new Date().toLocaleTimeString(),
-  },
-  {
-    id: 2,
-    name: randomTraderName(),
-    registration_number: randomId().slice(0, 8),
-    attendance: "ABSENT",
-    time: new Date().toLocaleTimeString(),
-  },
-  {
-    id: 3,
-    name: randomTraderName(),
-    registration_number: randomId().slice(0, 8),
-    attendance: "ABSENT",
-    time: new Date().toLocaleTimeString(),
-  },
-  {
-    id: 4,
-    name: randomTraderName(),
-    registration_number: randomId().slice(0, 8),
-    attendance: "ABSENT",
-    time: new Date().toLocaleTimeString(),
-  },
-  {
-    id: 5,
-    name: randomTraderName(),
-    registration_number: randomId().slice(0, 8),
-    attendance: "ABSENT",
-    time: new Date().toLocaleTimeString(),
-  },
-  {
-    id: 6,
-    name: randomTraderName(),
-    registration_number: randomId().slice(0, 8),
-    attendance: "ABSENT",
-    time: new Date().toLocaleTimeString(),
-  },
-  {
-    id: 7,
-    name: randomTraderName(),
-    registration_number: randomId().slice(0, 8),
-    attendance: "ABSENT",
-    time: new Date().toLocaleTimeString(),
-  },
-  {
-    id: 8,
-    name: randomTraderName(),
-    registration_number: randomId().slice(0, 8),
-    attendance: "ABSENT",
-    time: new Date().toLocaleTimeString(),
-  },
-  {
-    id: 9,
-    name: randomTraderName(),
-    registration_number: randomId().slice(0, 8),
-    attendance: "ABSENT",
-    time: new Date().toLocaleTimeString(),
-  },
-  {
-    id: 10,
-    name: randomTraderName(),
-    registration_number: randomId().slice(0, 8),
-    attendance: "ABSENT",
-    time: new Date().toLocaleTimeString(),
-  },
-];
+export const toViewAttendanceRow = (record, index) => ({
+  id: index + 1,
+  name: record.student_name,
+  registration_number: record.registration_number,
+  attendance: record.status,
+  marked_by: record.marked_by_name || "",
+  time: new Date(record.updated_at).toLocaleTimeString(),
+});

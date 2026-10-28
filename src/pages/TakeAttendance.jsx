@@ -1,75 +1,132 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { Box, Grid, Typography } from "@mui/material";
+import { Alert, Box, Grid, Typography } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import TakeAttendanceForm from "../components/forms/TakeAttandanceForm";
 import { errorToast, successToast } from "../components/utils/toastUtils";
-import { columns, rows } from "../data/takeAttendance";
+import { apiErrorMessage } from "../components/utils/apiErrorMessage";
+import { columns } from "../data/takeAttendance";
 import TableEditable from "../components/TableEditable";
+import requestHandler from "../apiCalls/requestHandler";
+import { CORE } from "../apiCalls/endpoints";
+
+// Defined outside the component: a styled component created during render is a new
+// component type every render, which remounts its children and wipes the grid's edits
+const ComponentWrapper = styled(Box)({
+  marginTop: "10px",
+  paddingBottom: "10px",
+});
 
 const TakeAttendance = () => {
   const [data, setData] = useState(null);
+  const [selection, setSelection] = useState(null);
+  const [alreadyMarked, setAlreadyMarked] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSearchResult = async (selectedClassroom, selectedStream) => {
+  const handleLoadClass = async (classroomId, date) => {
     setData(null);
     setLoading(true);
-    // Handle logic for checking exam results based on selectedSession and selectedClassroom
-    await new Promise((resolve) => setTimeout(resolve, 5000));
 
-    const fetchedData = rows;
+    // Load the roster and any attendance already saved for that day, so re-opening
+    // a day shows (and updates) what was marked instead of resetting everyone
+    const [[students, studentsError], [records, recordsError]] = await Promise.all([
+      requestHandler("get", CORE.GET_CLASSROOM_STUDENTS(classroomId)),
+      requestHandler("get", CORE.GET_FILTERED_ATTENDANCE(classroomId, date)),
+    ]);
+    setLoading(false);
 
-    if (fetchedData) {
-      setData(fetchedData);
-      console.log(
-        "Checking results for stream:",
-        selectedStream,
-        "Classroom:",
-        selectedClassroom
+    if (!students || !records) {
+      errorToast(
+        apiErrorMessage(studentsError || recordsError, "Could not load the class.")
       );
-      setLoading(false);
-
-      successToast("Success"); //logs 3 times
-    } else {
-      errorToast("No results found for the selected session.");
-      setLoading(false);
+      return;
     }
+    if (students.length === 0) {
+      errorToast("There are no students in this classroom.");
+      return;
+    }
+
+    const savedStatus = Object.fromEntries(
+      records.map((record) => [record.student, record.status])
+    );
+    setAlreadyMarked(records.length > 0);
+    setSelection({ classroomId, date });
+    setData(
+      students.map((student) => ({
+        id: student.id,
+        name: `${student.user.first_name} ${student.user.last_name}`,
+        registration_number: student.registration_number,
+        attendance: savedStatus[student.id] || "PRESENT",
+      }))
+    );
   };
 
-  const ComponentWrapper = styled(Box)({
-    marginTop: "10px",
-    paddingBottom: "10px",
-  });
+  const handleSubmit = async (rows) => {
+    const [result, error] = await requestHandler(
+      "post",
+      CORE.BULK_MARK_ATTENDANCE,
+      {
+        classroom: selection.classroomId,
+        date: selection.date,
+        records: rows.map((row) => ({ student: row.id, status: row.attendance })),
+      }
+    );
+
+    if (!result) {
+      errorToast(apiErrorMessage(error, "Attendance could not be saved."));
+      return false;
+    }
+    successToast(
+      `Attendance saved: ${result.created} new, ${result.updated} updated.`
+    );
+    setAlreadyMarked(true);
+    return true;
+  };
+
   return (
     <Box sx={{ pt: "80px", pb: "20px" }}>
       <ToastContainer />
       <Typography variant="h6" sx={{ marginBottom: "14px" }}>
-        Results
+        Take Attendance
       </Typography>
-      <ComponentWrapper>{/* <Stats /> */}</ComponentWrapper>
 
       <ComponentWrapper>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={12}>
+          <Grid item xs={12}>
             <TakeAttendanceForm
-              onSubmit={handleSearchResult}
+              onSubmit={handleLoadClass}
               loading={loading}
+              title="Select Class"
+              buttonText="Load Class"
             />
           </Grid>
-          <Grid item xs={12} md={6} lg={3}></Grid>
         </Grid>
       </ComponentWrapper>
 
       <ComponentWrapper>
         <Typography variant="h5" sx={{ my: 3 }}>
-          Student Attendance Record
+          Student Attendance{selection ? ` for ${selection.date}` : ""}
         </Typography>
         {data ? (
-          <TableEditable myData={data} myColumns={columns} />
+          <>
+            {alreadyMarked && (
+              <Alert severity="info" sx={{ mb: 2 }}>
+                Attendance was already taken for this day. Submitting again
+                updates the saved records.
+              </Alert>
+            )}
+            <TableEditable
+              key={`${selection.classroomId}-${selection.date}`}
+              myData={data}
+              myColumns={columns}
+              enableSubmitButton={true}
+              onSubmit={handleSubmit}
+            />
+          </>
         ) : (
           <Typography variant="body1">
-            {loading ? "Searching for data..." : "No Result Found!"}
+            {loading ? "Loading students..." : "Select a classroom and date."}
           </Typography>
         )}
       </ComponentWrapper>

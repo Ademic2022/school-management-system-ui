@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useUser } from "../utils/userContext";
 import {
   Typography,
@@ -12,81 +12,76 @@ import {
   TextField,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
+import requestHandler from "../../apiCalls/requestHandler";
+import { CORE } from "../../apiCalls/endpoints";
+import { errorToast } from "../utils/toastUtils";
 
-const TakeAttendanceForm = ({ onSubmit, loading }) => {
+export const getTodayDate = () => {
+  return new Date().toISOString().split("T")[0];
+};
+
+const TakeAttendanceForm = ({ onSubmit, loading, title, buttonText }) => {
+  const [classrooms, setClassrooms] = useState([]);
   const [selectedClassroom, setSelectedClassroom] = useState("");
-  const [selectedStream, setSelectedStream] = useState("");
+  const [date, setDate] = useState(getTodayDate());
   const { userStatus } = useUser();
 
-  const getTodayDate = () => {
-    return new Date().toISOString().split("T")[0];
-  };
-  const [dob, setDob] = useState(getTodayDate());
-
-  const handleClassroomChange = (event) => {
-    setSelectedClassroom(event.target.value);
-  };
-
-  const handleStreamChange = (event) => {
-    setSelectedStream(event.target.value);
-  };
+  useEffect(() => {
+    const fetchClassrooms = async () => {
+      const [data, error] = await requestHandler("get", CORE.CLASSROOM);
+      if (data) {
+        setClassrooms(data);
+      } else {
+        errorToast(error?.data?.detail || "Could not load classrooms.");
+      }
+    };
+    fetchClassrooms();
+  }, []);
 
   const handleSearchResult = () => {
-    // Call the parent component's function with selectedSession and selectedClassroom
-    onSubmit(selectedClassroom, selectedStream, loading);
+    // Call the parent component's function with the selected classroom id and date
+    onSubmit(selectedClassroom, date);
   };
+
   return (
     <Paper elevation={3} style={{ padding: 20 }}>
       <Typography variant="h6" gutterBottom>
-        Query Result
+        {title}
       </Typography>
       <Box sx={{ width: "100%", margin: "auto" }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={6}>
             <FormControl fullWidth margin="normal" required>
-              <InputLabel id="session-label">Classroom</InputLabel>
-              <Select
-                labelId="session-label"
-                id="session-select"
-                value={selectedClassroom}
-                label="Session"
-                onChange={handleClassroomChange}
-              >
-                <MenuItem value="2022/2023">JUNIOR SECONDARY SCHOOL 1</MenuItem>
-                <MenuItem value="2023/2024">JUNIOR SECONDARY SCHOOL 3</MenuItem>
-                {/* Add more session options as needed */}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} sm={4}>
-            <FormControl fullWidth margin="normal" required>
-              <InputLabel id="classroom-label">Stream</InputLabel>
+              <InputLabel id="classroom-label">Classroom</InputLabel>
               <Select
                 labelId="classroom-label"
                 id="classroom-select"
-                value={selectedStream}
+                value={selectedClassroom}
                 label="Classroom"
-                onChange={handleStreamChange}
+                onChange={(e) => setSelectedClassroom(e.target.value)}
               >
-                <MenuItem value="Class A">Class A</MenuItem>
-                <MenuItem value="Class B">Class B</MenuItem>
-                {/* Add more classroom options as needed */}
+                {classrooms.map((classroom) => (
+                  <MenuItem key={classroom.id} value={classroom.id}>
+                    {classroom.title} (Stream {classroom.stream})
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
 
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={6}>
             <TextField
               margin="normal"
               required
               fullWidth
-              name="dob"
+              label="Date"
+              name="date"
               type="date"
-              id="dob"
-              autoComplete="dob"
-              value={dob}
-              onChange={(e) => setDob(e.target.value)}
+              id="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              InputLabelProps={{ shrink: true }}
+              inputProps={{ max: getTodayDate() }}
             />
           </Grid>
         </Grid>
@@ -97,10 +92,10 @@ const TakeAttendanceForm = ({ onSubmit, loading }) => {
           onClick={handleSearchResult}
           loading={loading}
           loadingPosition="start"
-          sx={{ mt: 3, mb: 2, width: "15%" }}
-          disabled={!userStatus.isApproved}
+          sx={{ mt: 3, mb: 2, minWidth: "15%" }}
+          disabled={!userStatus.isApproved || !selectedClassroom || !date}
         >
-          {loading ? "Searching..." : "Search"}
+          {loading ? "Loading..." : buttonText}
         </LoadingButton>
       </Box>
     </Paper>

@@ -29,6 +29,8 @@ import {
   TeachersDetails,
   StudentDetails,
   InProgressPage,
+  TakeAttendance,
+  ViewAttendance,
   } from '../../pages';
   
 export const roleRoutes = {
@@ -79,8 +81,8 @@ export const roleRoutes = {
       { id: "teacher-results", path: "/results", element: <CheckResult /> },
       { id: "teacher-record-result", path: "/record_result", element: <RecordStudentResult /> },
       { id: "teacher-exam-schedules", path: "/exam_schedules", element: <ExamSchedule /> },
-      { id: "teacher-take-attendance", path: "/take_attendance", element: <InProgressPage pageName='Take Attendance' /> },
-      { id: "teacher-view-attendance", path: "/view_attendance", element: <InProgressPage pageName='Attendance Record' /> },
+      { id: "teacher-take-attendance", path: "/take_attendance", element: <TakeAttendance /> },
+      { id: "teacher-view-attendance", path: "/view_attendance", element: <ViewAttendance /> },
       { id: "teacher-leave-requests", path: "/leave_requests", element: <LeaveRequests /> },
       { id: "teacher-single-student", path: "/student/:id", element: <UserDetails /> },
     ],
