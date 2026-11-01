@@ -155,9 +155,6 @@ const TableEditable = ({
     setRowModesModel(newRowModesModel);
   };
 
-  const isEditing = Object.values(rowModesModel).some(
-    (model) => model.mode === GridRowModes.Edit,
-  );
   const handleGetAllData = async () => {
     setLoading(true);
 
@@ -284,9 +281,7 @@ const TableEditable = ({
               rowModesModel={rowModesModel}
               onRowModesModelChange={handleRowModesModelChange}
               onRowEditStop={handleRowEditStop}
-              processRowUpdate={
-                userStatus.isApproved ? processRowUpdate : undefined
-              }
+              processRowUpdate={userStatus.isApproved ? processRowUpdate : undefined}
               slots={{
                 toolbar: MyCustomToolbar,
               }}
@@ -308,7 +303,7 @@ const TableEditable = ({
                   onClick={handleGetAllData}
                   loading={loading}
                   loadingPosition="start"
-                  disabled={submitted || isEditing || !userStatus.isApproved}
+                  disabled={submitted || !userStatus.isApproved}
                   sx={{ mt: 3, mb: 2, width: "25%" }}
                 >
                   {loading ? "Submitting..." : "Submit Record"}
