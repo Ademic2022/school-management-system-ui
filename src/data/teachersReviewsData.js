@@ -12,7 +12,7 @@ export const teachersReviewColumn = [
     size: 100,
     Cell: ({ cell }) => (
       <div>
-        <Avatar src={cell.getValue()} sx={{ width: 30, height: 30 }} />
+        <Avatar src={cell.getValue()} sx={{ width: 30, height: 30 }}>{cell.row.original.name?.[0]}</Avatar>
       </div>
     ),
   },
@@ -49,7 +49,6 @@ export const teachersReviewData = [
     subject: "English Language",
     email: "johnsmith@example.com",
     rating: 4.5,
-    img: "/images/avatars/avatar1.png",
   },
   {
     id: 2,
@@ -57,7 +56,6 @@ export const teachersReviewData = [
     subject: "Mathematics",
     email: "janedoe@example.com",
     rating: 3.6,
-    img: "/images/avatars/avatar2.png",
   },
   {
     id: 3,
@@ -65,7 +63,6 @@ export const teachersReviewData = [
     subject: "Geography",
     email: "bobjohnson@example.com",
     rating: 2.8,
-    img: "/images/avatars/avatar3.png",
   },
   {
     id: 4,
@@ -73,6 +70,5 @@ export const teachersReviewData = [
     subject: "Economics",
     email: "alicewilliams@example.com",
     rating: 4.0,
-    img: "/images/avatars/avatar4.png",
   },
 ];

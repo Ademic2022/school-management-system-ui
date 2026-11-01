@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import CssBaseline from "@mui/material/CssBaseline";
 import Link from "@mui/material/Link";
@@ -8,7 +8,6 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { getRandomIndex } from "../data/loginImages";
 import AlignItemsList from "../components/Announcement";
 import LoginForm from "../components/forms/LoginForm";
 import RegisterForm from "../components/forms/RegisterForm";
@@ -33,14 +32,8 @@ function Copyright(props) {
 }
 
 function Authentication() {
-  const [randomImageUrl, setRandomImageUrl] = useState("");
   const [showLoginForm, setShowLoginForm] = useState(true);
   const [showResetPasswordForm, setShowResetPasswordForm] = useState(false); // New state
-
-  useEffect(() => {
-    const randomImage = getRandomIndex();
-    setRandomImageUrl(randomImage);
-  }, []);
 
   const handleToggleForm = () => {
     setShowLoginForm((prev) => !prev);
@@ -76,14 +69,7 @@ function Authentication() {
           md={7}
           sx={{
             position: "relative",
-            backgroundImage: `url(${randomImageUrl})`,
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundColor: "primary.dark",
           }}
         >
           <Box

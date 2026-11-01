@@ -130,7 +130,9 @@ const CheckResultForm = ({ onSubmit, loading }) => {
                         src={selectedUser?.profileImage}
                         alt={selectedUser?.name}
                         sx={{ marginRight: 1 }}
-                      />
+                      >
+                        {selectedUser?.name?.[0]}
+                      </Avatar>
                       {selectedUser?.name}
                     </div>
                   );
@@ -144,7 +146,9 @@ const CheckResultForm = ({ onSubmit, loading }) => {
                         src={user.profileImage}
                         alt={user.name}
                         sx={{ marginRight: 1 }}
-                      />
+                      >
+                        {user.name[0]}
+                      </Avatar>
                       {user.name}
                     </div>
                   </MenuItem>

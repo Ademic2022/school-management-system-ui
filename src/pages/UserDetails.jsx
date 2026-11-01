@@ -1,4 +1,4 @@
-import { Box, Grid, Paper, Typography } from "@mui/material";
+import { Avatar, Box, Grid, Paper, Typography } from "@mui/material";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { students, teachers } from "../data/studentsTeachers";
@@ -71,11 +71,13 @@ const UserDetails = () => {
                   justifyContent: "center",
                 }}
               >
-                <img
+                <Avatar
                   src={img}
-                  alt="Student"
-                  style={{ width: "60%", borderRadius: "50%" }}
-                />
+                  alt={name}
+                  sx={{ width: 160, height: 160, fontSize: 64 }}
+                >
+                  {name[0]}
+                </Avatar>
               </Paper>
             </Grid>
           </Grid>
@@ -120,11 +122,13 @@ const UserDetails = () => {
                   justifyContent: "center",
                 }}
               >
-                <img
+                <Avatar
                   src={img}
-                  alt="Student"
-                  style={{ width: "60%", borderRadius: "50%" }}
-                />
+                  alt={name}
+                  sx={{ width: 160, height: 160, fontSize: 64 }}
+                >
+                  {name[0]}
+                </Avatar>
               </Paper>
             </Grid>
           </Grid>

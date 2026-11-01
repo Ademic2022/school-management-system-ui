@@ -46,7 +46,7 @@ export const column = [
     size: 100,
     Cell: ({ cell }) => (
       <div>
-        <Avatar src={cell.getValue()} sx={{ width: 30, height: 30 }} />
+        <Avatar src={cell.getValue()} sx={{ width: 30, height: 30 }}>{cell.row.original.name?.[0]}</Avatar>
       </div>
     ),
   },
@@ -82,7 +82,6 @@ export const teachers = [
     email: "johnsmith@example.com",
     address: "123 Main Street, New York, NY 10001",
     subject: "English Language",
-    img: "/images/avatars/avatar1.png",
     assigned_subjects: [
       { title: "Mathematics", classroom: "Junior Secondary School 1" },
       { title: "English Language", classroom: "Junior Secondary School 3" },
@@ -96,7 +95,6 @@ export const teachers = [
     email: "janedoe@example.com",
     address: "456 Park Avenue, New York, NY 10022",
     subject: "Mathematics",
-    img: "/images/avatars/avatar2.png",
     assigned_subjects: [
       { title: "Mathematics", classroom: "Junior Secondary School 1" },
       { title: "English Language", classroom: "Junior Secondary School 3" },
@@ -110,7 +108,6 @@ export const teachers = [
     email: "bobjohnson@example.com",
     address: "789 Broadway, New York, NY 10011",
     subject: "Geography",
-    img: "/images/avatars/avatar3.png",
     assigned_subjects: [
       { title: "Mathematics", classroom: "Junior Secondary School 1" },
       { title: "English Language", classroom: "Junior Secondary School 3" },
@@ -124,7 +121,6 @@ export const teachers = [
     email: "alicewilliams@example.com",
     address: "321 5th Avenue, New York, NY 10016",
     subject: "Economics",
-    img: "/images/avatars/avatar4.png",
     assigned_subjects: [
       { title: "Mathematics", classroom: "Junior Secondary School 1" },
       { title: "English Language", classroom: "Junior Secondary School 3" },

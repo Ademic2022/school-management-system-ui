@@ -5,7 +5,6 @@ export const Users = [
     email: "johnsmith@example.com",
     address: "123 Main Street, New York, NY 10001",
     phone: "212-555-1212",
-    img: "/images/avatars/avatar1.png",
   },
   {
     id: 2,
@@ -13,7 +12,6 @@ export const Users = [
     email: "janedoe@example.com",
     address: "456 Park Avenue, New York, NY 10022",
     phone: "212-555-2323",
-    img: "/images/avatars/avatar2.png",
   },
   {
     id: 3,
@@ -21,7 +19,6 @@ export const Users = [
     email: "bobjohnson@example.com",
     address: "789 Broadway, New York, NY 10011",
     phone: "212-555-3434",
-    img: "/images/avatars/avatar3.png",
   },
   {
     id: 4,
@@ -29,7 +26,6 @@ export const Users = [
     email: "alicewilliams@example.com",
     address: "321 5th Avenue, New York, NY 10016",
     phone: "212-555-4545",
-    img: "/images/avatars/avatar4.png",
   },
   {
     id: 5,
@@ -37,7 +33,6 @@ export const Users = [
     email: "mikethompson@example.com",
     address: "246 West 34th Street, New York, NY 10001",
     phone: "212-555-5656",
-    img: "/images/avatars/avatar5.png",
   },
   {
     id: 6,
@@ -45,7 +40,6 @@ export const Users = [
     email: "samanthajones@example.com",
     address: "159 East 38th Street, New York, NY 10016",
     phone: "212-555-6767",
-    img: "/images/avatars/avatar6.png",
   },
   {
     id: 7,
@@ -53,7 +47,6 @@ export const Users = [
     email: "chrisanderson@example.com",
     address: "741 Lexington Avenue, New York, NY 10022",
     phone: "212-555-7878",
-    img: "/images/avatars/avatar7.png",
   },
   {
     id: 8,
@@ -61,7 +54,6 @@ export const Users = [
     email: "emilywilliams@example.com",
     address: "423 3rd Avenue, New York, NY 10017",
     phone: "212-555-8989",
-    img: "/images/avatars/avatar8.png",
   },
   {
     id: 9,
@@ -69,7 +61,6 @@ export const Users = [
     email: "davidjohnson@example.com",
     address: "254 East 28th Street, New York, NY 10016",
     phone: "212-555-9898",
-    img: "/images/avatars/avatar9.png",
   },
   {
     id: 10,
@@ -77,6 +68,5 @@ export const Users = [
     email: "sarahsmith@example.com",
     address: "135 West 25th Street, New York, NY 10001",
     phone: "212-555-1212",
-    img: "/images/avatars/avatar10.png",
   },
 ];

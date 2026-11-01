@@ -88,7 +88,7 @@ const Users = () => {
                   anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                   variant="dot"
                 >
-                  <Avatar src={img} sx={{ width: "30px", height: "30px" }} />
+                  <Avatar src={img} sx={{ width: "30px", height: "30px" }}>{name[0]}</Avatar>
                 </StyledBadge>
 
                 <Box sx={{ display: { xs: "none", sm: "block" } }}>

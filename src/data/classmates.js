@@ -11,7 +11,7 @@ export const classmateColumns = [
     size: 100,
     Cell: ({ cell }) => (
       <div>
-        <Avatar src={cell.getValue()} sx={{ width: 30, height: 30 }} />
+        <Avatar src={cell.getValue()} sx={{ width: 30, height: 30 }}>{cell.row.original.name?.[0]}</Avatar>
       </div>
     ),
   },
@@ -43,68 +43,58 @@ export const classmates = [
     name: "Dest William",
     gender: "Male",
     rating: 3.2,
-    img: "/images/avatars/avatar1.png",
   },
   {
     id: 2,
     name: "Laura Peter",
     gender: "Male",
     rating: 3.2,
-    img: "/images/avatars/avatar3.png",
   },
   {
     id: 3,
     name: "Mary Thomas",
     gender: "Female",
     rating: 2.8,
-    img: "/images/avatars/avatar2.png",
   },
   {
     id: 4,
     name: "Fatimah Hassan",
     gender: "Female",
     rating: 3.8,
-    img: "/images/avatars/avatar4.png",
   },
   {
     id: 5,
     name: "Lora Messi",
     gender: "Male",
     rating: 2.8,
-    img: "/images/avatars/avatar7.png",
   },
   {
     id: 6,
     name: "Jeremy Lane",
     gender: "Male",
     rating: 4.0,
-    img: "/images/avatars/avatar7.png",
   },
   {
     id: 7,
     name: "Angel Lane",
     gender: "Female",
     rating: 1.8,
-    img: "/images/avatars/avatar6.png",
   },
   {
     id: 8,
     name: "Brittany Mathew",
     gender: "Female",
     rating: 1.7,
-    img: "/images/avatars/avatar8.png",
   },
   {
     id: 9,
     name: "George Lauren",
     gender: "Male",
-    img: "/images/avatars/avatar9.png",
   },
   {
     id: 10,
     name: "Michael Ademic",
     gender: "Male",
     rating: 3.5,
-    img: "/images/avatars/avatar3.png",
   },
 ];

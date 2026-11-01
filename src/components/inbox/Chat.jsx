@@ -69,10 +69,7 @@ const Chat = () => {
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             variant="dot"
           >
-            <Avatar
-              src="/images/avatars/profile-avatar.png"
-              sx={{ width: "30px", height: "30px" }}
-            />
+            <Avatar sx={{ width: "30px", height: "30px" }}>B</Avatar>
           </StyledBadge>
 
           <Box>
@@ -128,11 +125,6 @@ const Chat = () => {
               }}
             >
               <Avatar
-                src={`${
-                  user.id === "u1"
-                    ? "/images/avatars/profile-avatar.png"
-                    : "/images/avatars/avatar3.png"
-                }`}
                 sx={{
                   width: "30px",
                   height: "30px",

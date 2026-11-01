@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Box, Grid, Paper, Typography } from "@mui/material";
+import { Avatar, Box, Grid, Paper, Typography } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { useUser } from "../components/utils/userContext";
@@ -44,11 +44,12 @@ const ExamResult = () => {
               }}
             >
               {/* <TeachersList /> */}
-              <img
-                src="/images/avatars/profile-avatar.png"
+              <Avatar
                 alt="Student"
-                style={{ width: "100%", borderRadius: "50%" }}
-              />
+                sx={{ width: 160, height: 160, mx: "auto", fontSize: 64 }}
+              >
+                {user.first_name?.[0]}
+              </Avatar>
             </Paper>
           </Grid>
         </Grid>

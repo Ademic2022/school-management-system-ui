@@ -48,7 +48,7 @@ const TopStudents = () => {
                 gap: 2,
               }}
             >
-              <Avatar src={img} sx={{ width: 30, height: 30 }} />
+              <Avatar src={img} sx={{ width: 30, height: 30 }}>{customer_name[0]}</Avatar>
               <Box>
                 <Typography variant="h6" sx={{ fontSize: "18px" }}>
                   {customer_name}
