@@ -17,7 +17,7 @@ import { CORE } from "../../apiCalls/endpoints";
 import { errorToast } from "../utils/toastUtils";
 
 export const getTodayDate = () => {
-  return new Date().toISOString().split("T")[0];
+  return new Date().toLocaleDateString("en-CA");
 };
 
 const TakeAttendanceForm = ({ onSubmit, loading, title, buttonText }) => {
