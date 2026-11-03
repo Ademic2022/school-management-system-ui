@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { Alert, Box, Grid, Typography } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 import TakeAttendanceForm from "../components/forms/TakeAttandanceForm";
 import { errorToast, successToast } from "../components/utils/toastUtils";
 import { apiErrorMessage } from "../components/utils/apiErrorMessage";
@@ -86,7 +85,6 @@ const TakeAttendance = () => {
 
   return (
     <Box sx={{ pt: "80px", pb: "20px" }}>
-      <ToastContainer />
       <Typography variant="h6" sx={{ marginBottom: "14px" }}>
         Take Attendance
       </Typography>

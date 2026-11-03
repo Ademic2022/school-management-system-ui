@@ -2,7 +2,6 @@ import React from "react";
 import styled from "@emotion/styled";
 import { Avatar, Box, Grid, Paper, Typography } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 import { useUser } from "../components/utils/userContext";
 import StudentResultCard from "../components/StudentResultCard";
 import { Table } from "../components/Table";
@@ -16,7 +15,6 @@ const ExamResult = () => {
   });
   return (
     <Box sx={{ pt: "80px", pb: "20px" }}>
-      <ToastContainer />
       <Typography variant="h6" sx={{ marginBottom: "14px" }}>
         Results
       </Typography>

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { Box, Chip, Grid, Stack, Typography } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 import TakeAttendanceForm from "../components/forms/TakeAttandanceForm";
 import { errorToast } from "../components/utils/toastUtils";
 import { apiErrorMessage } from "../components/utils/apiErrorMessage";
@@ -49,7 +48,6 @@ const ViewAttendance = () => {
 
   return (
     <Box sx={{ pt: "80px", pb: "20px" }}>
-      <ToastContainer />
       <Typography variant="h6" sx={{ marginBottom: "14px" }}>
         Attendance Record
       </Typography>

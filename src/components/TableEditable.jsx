@@ -14,7 +14,6 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { ToastContainer } from "react-toastify";
 import { successToast } from "../components/utils/toastUtils";
 import { useUser } from "./utils/userContext";
 
@@ -273,8 +272,6 @@ const TableEditable = ({
           padding: "16px",
         }}
       >
-        <ToastContainer />
-
         {rows ? (
           <>
             <DataGrid

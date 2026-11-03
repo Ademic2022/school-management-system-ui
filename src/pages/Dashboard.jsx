@@ -6,7 +6,6 @@ import TeachersList from "../components/home/TeachersList";
 import Subjects from "../components/home/Subjects";
 import { Table } from "../components/Table";
 import { timetableData, timetableColumns } from "../data/timetable";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUser } from "../components/utils/userContext";
 import TopStudents from "../components/home/TopStudents";
@@ -25,7 +24,6 @@ const Dashboard = () => {
 
   return (
     <Box sx={{ pt: "80px", pb: "20px" }}>
-      <ToastContainer />
       <Typography variant="h6" sx={{ marginBottom: "14px" }}>
         Dashboard
       </Typography>

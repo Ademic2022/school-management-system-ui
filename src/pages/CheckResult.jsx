@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { Box, Grid, Typography } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 import { Table } from "../components/Table";
 import { resultsData, resultColumn } from "../data/results";
 import RecordResultForm from "../components/forms/CheckResultForm";
@@ -46,7 +45,6 @@ const CheckResult = () => {
   });
   return (
     <Box sx={{ pt: "80px", pb: "20px", '@media (min-width:960px)': { width: "vw" } }}>
-      <ToastContainer />
       <Typography variant="h6" sx={{ marginBottom: "14px" }}>
         Results
       </Typography>
